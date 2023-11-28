@@ -4,13 +4,29 @@ using UnityEngine;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(Text))]
-public class HighscoreText : MonoBehaviour {
+public class HighscoreText : MonoBehaviour
+{
+    Text highscore;
 
-	Text highscore;
-		void OnEnable(){
+    void OnEnable()
+    {
+        highscore = GetComponent<Text>();
+        DisplayHighscore();
+    }
 
-		highscore = GetComponent<Text> ();
-		highscore.text = "High Score : " + PlayerPrefs.GetInt ("highscore") ;
-			
-		}	
+    void DisplayHighscore()
+    {
+        highscore.text = "High Score : " + PlayerPrefs.GetInt("highscore", 0);
+    }
+
+    public void UpdateHighscore(int newScore)
+    {
+        int currentHighScore = PlayerPrefs.GetInt("highscore", 0);
+        if (newScore > currentHighScore)
+        {
+            PlayerPrefs.SetInt("highscore", newScore);
+            PlayerPrefs.Save();
+            DisplayHighscore(); // Update the display after changing the highscore
+        }
+    }
 }
